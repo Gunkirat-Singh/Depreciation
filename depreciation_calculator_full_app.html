@@ -1,0 +1,460 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.tabs{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:24px;gap:0}
+.tb{padding:10px 20px;border:none;background:none;cursor:pointer;font-size:14px;color:var(--color-text-secondary);border-bottom:2.5px solid transparent;margin-bottom:-1px;font-family:inherit;transition:color .15s}
+.tb:hover{color:var(--color-text-primary)}
+.tb.on{color:var(--color-text-primary);border-bottom-color:#BA7517;font-weight:500}
+.slbl{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:12px;padding-bottom:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.fl{font-size:12px;color:var(--color-text-secondary);margin-bottom:5px;display:block}
+.fi{width:100%;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:9px 12px;font-size:14px;color:var(--color-text-primary);font-family:inherit;outline:none;transition:border-color .15s}
+.fi:focus{border-color:#BA7517;box-shadow:0 0 0 2px rgba(186,117,23,.12)}
+.fi:disabled{opacity:.45;cursor:not-allowed}
+select.fi option{background:var(--color-background-primary)}
+.mc{padding:14px 16px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);cursor:pointer;transition:border-color .15s,background .15s}
+.mc:hover{border-color:var(--color-border-secondary)}
+.mc.sel{border:1.5px solid #BA7517;background:rgba(186,117,23,.07)}
+.mck{font-size:13px;font-weight:500;color:var(--color-text-secondary);margin-bottom:3px}
+.mc.sel .mck{color:#854F0B}
+.mcv{font-size:12px;color:var(--color-text-tertiary)}
+.mc.sel .mcv{color:#BA7517}
+.cb{width:100%;padding:13px;border:none;border-radius:var(--border-radius-md);background:#BA7517;color:#fff;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:background .15s}
+.cb:hover{background:#854F0B}
+.statc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px}
+.slb{font-size:11px;color:var(--color-text-secondary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.svl{font-size:21px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-mono)}
+.tw{overflow-x:auto;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:22px}
+table.sc{width:100%;border-collapse:collapse;font-size:13px;font-family:var(--font-mono)}
+table.sc th{padding:11px 13px;text-align:right;background:var(--color-background-secondary);color:var(--color-text-secondary);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-bottom:0.5px solid var(--color-border-tertiary);white-space:nowrap}
+table.sc th:nth-child(1),table.sc th:nth-child(2){text-align:left}
+table.sc td{padding:10px 13px;text-align:right;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+table.sc td:nth-child(1){text-align:left;color:var(--color-text-secondary);font-family:var(--font-sans);width:36px}
+table.sc td:nth-child(2){text-align:left;color:var(--color-text-secondary);font-family:var(--font-sans)}
+table.sc tr:last-child td{border-bottom:none}
+table.sc tr:hover td{background:rgba(186,117,23,.04)}
+.tr td{font-weight:500;color:#854F0B;background:rgba(186,117,23,.05)!important;border-top:0.5px solid rgba(186,117,23,.3);border-bottom:none!important}
+.dc{border-radius:var(--border-radius-lg);padding:18px 20px;border:0.5px solid var(--color-border-tertiary)}
+.dc.gain{border-color:rgba(59,109,17,.4);background:rgba(59,109,17,.05)}
+.dc.loss{border-color:rgba(163,45,45,.4);background:rgba(163,45,45,.05)}
+.jrnl{font-family:var(--font-mono);font-size:13px;color:var(--color-text-primary);line-height:2;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px}
+.fb{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:16px;font-family:var(--font-mono);font-size:12px;color:var(--color-text-primary);white-space:pre;overflow-x:auto;line-height:1.8;max-height:380px;overflow-y:auto}
+.xb{padding:11px 22px;border:0.5px solid #BA7517;border-radius:var(--border-radius-md);background:rgba(186,117,23,.1);color:#854F0B;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.xb:hover{background:rgba(186,117,23,.18)}
+.infonote{padding:10px 14px;border-radius:var(--border-radius-md);font-size:13px;background:rgba(186,117,23,.08);color:#854F0B;border:0.5px solid rgba(186,117,23,.25);margin-bottom:16px}
+.empty{text-align:center;padding:56px 0;color:var(--color-text-tertiary);font-size:14px}
+.rdiv{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;color:var(--color-text-primary);cursor:pointer}
+input[type=radio]{accent-color:#BA7517}
+code.pill{font-family:var(--font-mono);background:var(--color-background-secondary);padding:2px 6px;border-radius:4px;font-size:12px}
+</style>
+
+<h2 class="sr-only">Asset depreciation calculator with straight-line, written-down-value, and units-of-production methods, with Excel export</h2>
+
+<div style="padding:16px 0 0">
+  <div class="tabs">
+    <button class="tb on" id="tb-form" onclick="swTab('form')">① Asset details</button>
+    <button class="tb" id="tb-sched" onclick="swTab('sched')">② Depreciation schedule</button>
+    <button class="tb" id="tb-excel" onclick="swTab('excel')">③ Excel output</button>
+  </div>
+
+  <!-- ═══════════ FORM PANEL ═══════════ -->
+  <div id="pn-form">
+    <div class="slbl">Company &amp; asset information</div>
+    <div class="g3">
+      <div><label class="fl">Company name</label><input id="company" class="fi" placeholder="e.g. Reliance Industries Ltd."></div>
+      <div><label class="fl">Asset name / description</label><input id="assetName" class="fi" placeholder="e.g. CNC Lathe Machine #4"></div>
+      <div><label class="fl">Date of purchase</label><input id="purchaseDate" class="fi" type="date"></div>
+    </div>
+
+    <div class="slbl">Valuation parameters</div>
+    <div class="g3">
+      <div><label class="fl">Cost of asset (₹)</label><input id="cost" class="fi" type="number" min="0" placeholder="e.g. 500000"></div>
+      <div><label class="fl">Residual / salvage value (₹)</label><input id="residual" class="fi" type="number" min="0" placeholder="e.g. 50000"></div>
+      <div><label class="fl">Useful life (years)</label><input id="life" class="fi" type="number" min="1" placeholder="e.g. 10"></div>
+    </div>
+
+    <div class="slbl">Depreciation method</div>
+    <div class="g3" style="margin-bottom:14px">
+      <div class="mc sel" id="mc-SLM" onclick="selM('SLM')"><div class="mck">SLM</div><div class="mcv">Straight-line method</div></div>
+      <div class="mc" id="mc-WDV" onclick="selM('WDV')"><div class="mck">WDV</div><div class="mcv">Written down value</div></div>
+      <div class="mc" id="mc-UOP" onclick="selM('UOP')"><div class="mck">UOP</div><div class="mcv">Units of production</div></div>
+    </div>
+
+    <div id="wdv-x" style="display:none;margin-bottom:22px">
+      <div class="slbl">WDV rate</div>
+      <label class="rdiv"><input type="radio" name="wm" id="wm-a" checked onchange="twm()"> Auto-compute from cost, residual &amp; life</label>
+      <label class="rdiv"><input type="radio" name="wm" id="wm-m" onchange="twm()"> Enter rate manually</label>
+      <div id="wm-manual" style="display:none;margin-top:10px;max-width:220px">
+        <label class="fl">WDV rate (% per annum)</label>
+        <input id="wdvRate" class="fi" type="number" step="0.001" placeholder="e.g. 25.89">
+      </div>
+      <div id="wm-auto-note" style="font-size:12px;color:var(--color-text-tertiary);font-family:var(--font-mono);margin-top:8px">
+        Rate = 1 − (Residual ÷ Cost)^(1/Life) — computed automatically
+      </div>
+    </div>
+
+    <div id="uop-x" style="display:none;margin-bottom:22px">
+      <div class="slbl">Production data</div>
+      <div class="g2">
+        <div><label class="fl">Total production capacity over asset life (units)</label><input id="totalU" class="fi" type="number" min="1" placeholder="e.g. 100000"></div>
+        <div><label class="fl">Units produced per year — comma-separated in order</label><input id="uopY" class="fi" placeholder="e.g. 15000, 18000, 20000, 22000, 25000"></div>
+      </div>
+    </div>
+
+    <div class="slbl">Sale / disposal of asset <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--color-text-tertiary)">(optional)</span></div>
+    <div class="g3" style="margin-bottom:32px">
+      <div><label class="fl">Date of sale / disposal</label><input id="saleDate" class="fi" type="date" oninput="togSale()"></div>
+      <div><label class="fl">Sale proceeds (₹)</label><input id="salePro" class="fi" type="number" min="0" placeholder="e.g. 120000" disabled></div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:4px"><div style="font-size:12px;color:var(--color-text-tertiary)">Gain/loss on disposal is computed automatically when a sale date is entered</div></div>
+    </div>
+
+    <button class="cb" onclick="gen()">Generate depreciation schedule →</button>
+  </div>
+
+  <!-- ═══════════ SCHEDULE PANEL ═══════════ -->
+  <div id="pn-sched" style="display:none">
+    <div id="sc-body"><div class="empty">Fill the form and click generate to view the depreciation schedule</div></div>
+  </div>
+
+  <!-- ═══════════ EXCEL PANEL ═══════════ -->
+  <div id="pn-excel" style="display:none">
+    <div id="xl-body"><div class="empty">Generate a schedule first to see Excel export options</div></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+var meth='SLM', lastR=null;
+var MNS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function swTab(t){
+  ['form','sched','excel'].forEach(id=>{
+    document.getElementById('pn-'+id).style.display=id===t?'':'none';
+    document.getElementById('tb-'+id).classList.toggle('on',id===t);
+  });
+}
+function selM(m){
+  meth=m;
+  ['SLM','WDV','UOP'].forEach(k=>document.getElementById('mc-'+k).classList.toggle('sel',k===m));
+  document.getElementById('wdv-x').style.display=m==='WDV'?'':'none';
+  document.getElementById('uop-x').style.display=m==='UOP'?'':'none';
+}
+function twm(){
+  var manual=document.getElementById('wm-m').checked;
+  document.getElementById('wm-manual').style.display=manual?'':'none';
+  document.getElementById('wm-auto-note').style.display=manual?'none':'';
+}
+function togSale(){
+  var hasSale=!!document.getElementById('saleDate').value;
+  document.getElementById('salePro').disabled=!hasSale;
+  if(!hasSale)document.getElementById('salePro').value='';
+}
+var mn=function(m){return MNS[m-1];};
+function fmtN(n,d){
+  if(d===undefined)d=2;
+  return typeof n==='number'&&!isNaN(n)?n.toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+}
+function fmtC(n){return '₹'+fmtN(n);}
+function fmtP(n){return (n*100).toFixed(4)+'%';}
+
+function compute(f){
+  var cost=+f.cost,res=+f.residual,life=+f.life;
+  if(!cost||isNaN(res)||!life||!f.purchaseDate)return null;
+  var pD=new Date(f.purchaseDate),pY=pD.getFullYear(),pM=pD.getMonth()+1;
+  var sD=f.saleDate?new Date(f.saleDate):null;
+  var sY=sD?sD.getFullYear():null,sM=sD?sD.getMonth()+1:null;
+
+  var wdvRate=0;
+  if(f.method==='WDV'){
+    wdvRate=f.autoWdv?(1-Math.pow(res/cost,1/life)):f.wdvRate/100;
+    if(isNaN(wdvRate)||wdvRate<=0)return null;
+  }
+  var uopArr=f.method==='UOP'?(f.uopY||'').split(',').map(function(u){return +u.trim()||0;}):[];
+  var totalU=+f.totalU||uopArr.reduce(function(a,b){return a+b;},0);
+
+  var rows=[],bv=cost,acc=0;
+  for(var i=0;i<life;i++){
+    var yr=pY+i;
+    var startM=i===0?pM:1;
+    var isSaleYr=sD&&yr===sY;
+    var endM=isSaleYr?sM:12;
+    var pro=(endM-startM+1)/12;
+    var period=startM===endM?(mn(startM)+' '+yr):(mn(startM)+' '+yr+' – '+mn(endM)+' '+yr);
+    var dep=0;
+    if(f.method==='SLM') dep=(cost-res)/life*pro;
+    else if(f.method==='WDV') dep=bv*wdvRate*pro;
+    else dep=totalU?(uopArr[i]||0)/totalU*(cost-res):0;
+    dep=Math.min(dep,Math.max(0,bv-res));
+    var openBV=bv;
+    acc+=dep;bv=Math.max(res,openBV-dep);
+    rows.push({sn:i+1,yr:yr,period:period,pro:pro,openBV:openBV,dep:dep,acc:acc,closeBV:bv,units:uopArr[i]||0});
+    if(isSaleYr||bv<=res+0.005)break;
+  }
+  var disposal=null;
+  if(sD){var sp=+f.saleProceeds||0,nbv=rows[rows.length-1].closeBV;disposal={date:f.saleDate,sp:sp,nbv:nbv,gl:sp-nbv};}
+  return{rows:rows,disposal:disposal,wdvRate:wdvRate,totalU:totalU,cost:cost,res:res,life:life};
+}
+
+function gen(){
+  var f={
+    company:document.getElementById('company').value.trim(),
+    assetName:document.getElementById('assetName').value.trim(),
+    purchaseDate:document.getElementById('purchaseDate').value,
+    cost:document.getElementById('cost').value,
+    residual:document.getElementById('residual').value,
+    life:document.getElementById('life').value,
+    method:meth,
+    autoWdv:document.getElementById('wm-a').checked,
+    wdvRate:+document.getElementById('wdvRate').value,
+    saleDate:document.getElementById('saleDate').value,
+    saleProceeds:document.getElementById('salePro').value,
+    totalU:document.getElementById('totalU').value,
+    uopY:document.getElementById('uopY').value,
+  };
+  var r=compute(f);
+  if(!r){alert('Please fill all required fields:\n• Cost of asset\n• Residual value\n• Useful life\n• Purchase date'+(meth==='WDV'?'\n• WDV rate (if manual)':'')+(meth==='UOP'?'\n• Production data':''));return;}
+  lastR={f:f,r:r};
+  renderSched(f,r);
+  renderXL(f,r);
+  swTab('sched');
+}
+
+function renderSched(f,r){
+  var rows=r.rows,disposal=r.disposal,isUOP=f.method==='UOP';
+  var totDep=rows.reduce(function(s,x){return s+x.dep;},0);
+  var totUnits=rows.reduce(function(s,x){return s+x.units;},0);
+  var methodLbl={SLM:'Straight-line method (SLM)',WDV:'Written down value (WDV)',UOP:'Units of production (UOP)'}[f.method];
+
+  var h='<div style="margin-bottom:20px">';
+  h+='<div style="font-size:18px;font-weight:500;color:var(--color-text-primary)">'+(f.assetName||'Asset')+' — Depreciation Schedule</div>';
+  h+='<div style="font-size:13px;color:var(--color-text-secondary);margin-top:4px">'+(f.company||'Company')+' &middot; '+methodLbl+(f.purchaseDate?' &middot; Purchased '+f.purchaseDate:'')+'</div></div>';
+
+  h+='<div class="g4">';
+  h+='<div class="statc"><div class="slb">Asset cost</div><div class="svl">'+fmtC(r.cost)+'</div></div>';
+  h+='<div class="statc"><div class="slb">Total depreciation</div><div class="svl">'+fmtC(totDep)+'</div></div>';
+  h+='<div class="statc"><div class="slb">Residual value</div><div class="svl">'+fmtC(r.res)+'</div></div>';
+  if(f.method==='WDV') h+='<div class="statc"><div class="slb">WDV rate p.a.</div><div class="svl" style="font-size:17px">'+fmtP(r.wdvRate)+'</div></div>';
+  else if(f.method==='UOP') h+='<div class="statc"><div class="slb">Total capacity</div><div class="svl" style="font-size:17px">'+r.totalU.toLocaleString('en-IN')+' units</div></div>';
+  else h+='<div class="statc"><div class="slb">Annual depreciation</div><div class="svl" style="font-size:17px">'+fmtC((r.cost-r.res)/r.life)+'</div></div>';
+  h+='</div>';
+
+  if(f.method==='WDV') h+='<div class="infonote">WDV rate applied: <strong style="font-family:var(--font-mono)">'+fmtP(r.wdvRate)+'</strong> p.a. &nbsp;·&nbsp; Formula: 1 − (Residual ÷ Cost)^(1/Life) = 1 − ('+fmtN(r.res,0)+' ÷ '+fmtN(r.cost,0)+')^(1/'+r.life+')</div>';
+
+  h+='<div class="tw"><table class="sc"><thead><tr>';
+  h+='<th>Yr</th><th>Period</th>';
+  if(isUOP) h+='<th>Units</th>';
+  h+='<th>Proration</th><th>Opening BV (₹)</th><th>Depreciation (₹)</th><th>Acc. Dep. (₹)</th><th>Closing BV (₹)</th>';
+  h+='</tr></thead><tbody>';
+
+  rows.forEach(function(row){
+    var depColor=row.dep>0?'color:#854F0B':'';
+    h+='<tr><td>'+row.sn+'</td><td>'+row.period+'</td>';
+    if(isUOP) h+='<td>'+row.units.toLocaleString('en-IN')+'</td>';
+    h+='<td>'+(row.pro*12).toFixed(0)+'/12</td>';
+    h+='<td>'+fmtN(row.openBV)+'</td>';
+    h+='<td style="'+depColor+'">'+fmtN(row.dep)+'</td>';
+    h+='<td>'+fmtN(row.acc)+'</td>';
+    h+='<td style="font-weight:500">'+fmtN(row.closeBV)+'</td></tr>';
+  });
+
+  // Total row
+  h+='<tr class="tr"><td colspan="'+(isUOP?2:3)+'">Total</td>';
+  if(isUOP) h+='<td>'+totUnits.toLocaleString('en-IN')+'</td>';
+  h+='<td></td><td></td><td style="color:#854F0B">'+fmtN(totDep)+'</td><td></td><td></td></tr>';
+  h+='</tbody></table></div>';
+
+  if(disposal){
+    var glColor=disposal.gl>=0?'#3B6D11':'#A32D2D';
+    var cls=disposal.gl>=0?'gain':'loss';
+    var lastAcc=rows[rows.length-1].acc;
+    h+='<div class="slbl" style="margin-top:6px">Disposal analysis</div>';
+    h+='<div class="g2">';
+    h+='<div class="dc '+cls+'">';
+    h+='<div style="font-size:11px;color:var(--color-text-secondary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">'+(disposal.gl>=0?'Gain on disposal':'Loss on disposal')+'</div>';
+    h+='<div style="font-size:26px;font-weight:500;font-family:var(--font-mono);color:'+glColor+'">'+(disposal.gl>=0?'+':'')+fmtC(disposal.gl)+'</div>';
+    h+='<div style="margin-top:10px;font-size:12px;color:var(--color-text-secondary)">Sale proceeds '+fmtC(disposal.sp)+' − Net book value '+fmtC(disposal.nbv)+'</div>';
+    h+='</div>';
+    h+='<div class="jrnl">';
+    h+='<span style="font-size:11px;color:var(--color-text-secondary);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:10px">Journal entry at disposal</span>';
+    h+='Dr. Cash / Bank &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; '+fmtC(disposal.sp)+'<br>';
+    h+='Dr. Acc. Depreciation &emsp;&emsp;&emsp;&ensp; '+fmtC(lastAcc)+'<br>';
+    h+='&emsp;Cr. '+(f.assetName||'Asset')+' at Cost &ensp;&emsp;&emsp;&ensp; '+fmtC(r.cost)+'<br>';
+    if(disposal.gl>=0) h+='&emsp;Cr. Gain on Disposal &emsp;&emsp;&emsp; '+fmtC(disposal.gl);
+    else h+='Dr. Loss on Disposal &emsp;&emsp;&emsp;&emsp;&ensp; '+fmtC(-disposal.gl);
+    h+='</div></div>';
+  }
+
+  document.getElementById('sc-body').innerHTML=h;
+}
+
+function renderXL(f,r){
+  var rows=r.rows,isUOP=f.method==='UOP',isWDV=f.method==='WDV';
+  var oC=isUOP?'E':'D', dC=isUOP?'F':'E', aC=isUOP?'G':'F', cC=isUOP?'H':'G', proC=isUOP?'D':'C';
+  var lastDR=rows.length+1;
+  var lines=['INPUTS SHEET — in a sheet named "Inputs", put these values in column B at the stated rows:',''];
+  lines.push('B9\t'+r.cost+'\t  ← Cost of asset');
+  lines.push('B10\t'+r.res+'\t  ← Residual value');
+  lines.push('B11\t'+r.life+'\t  ← Useful life (years)');
+  if(isWDV) lines.push('B13\t'+r.wdvRate.toFixed(8)+'\t  ← WDV rate (computed)');
+  if(isUOP) lines.push('B13\t'+r.totalU+'\t  ← Total production units');
+  lines.push('');
+  lines.push('DEPRECIATION SCHEDULE — paste into a sheet named "Depreciation Schedule" starting at cell A1:');
+  lines.push('(Rows starting with = are Excel formulas — they will auto-calculate when pasted)');
+  lines.push('');
+  var hdrs=isUOP
+    ?['Yr','Period','Units','Proration','Opening BV (₹)','Depreciation (₹)','Acc. Dep (₹)','Closing BV (₹)']
+    :['Yr','Period','Proration','Opening BV (₹)','Depreciation (₹)','Acc. Dep (₹)','Closing BV (₹)'];
+  lines.push(hdrs.join('\t'));
+
+  rows.forEach(function(row,i){
+    var er=i+2;
+    var openF=i===0?'=Inputs!$B$9':'='+cC+(er-1);
+    var depF;
+    if(f.method==='SLM') depF='=(Inputs!$B$9-Inputs!$B$10)/Inputs!$B$11*'+proC+er;
+    else if(isWDV) depF='='+oC+er+'*Inputs!$B$13*'+proC+er;
+    else depF='=(C'+er+'/Inputs!$B$13)*(Inputs!$B$9-Inputs!$B$10)';
+    var accF=i===0?'='+dC+er:'='+aC+(er-1)+'+'+dC+er;
+    var closeF='='+oC+er+'-'+dC+er;
+    if(isUOP) lines.push([row.sn,row.period,row.units,row.pro.toFixed(4),openF,depF,accF,closeF].join('\t'));
+    else lines.push([row.sn,row.period,row.pro.toFixed(4),openF,depF,accF,closeF].join('\t'));
+  });
+
+  if(isUOP) lines.push('TOTAL\t\t=SUM(C2:C'+lastDR+')\t\t\t=SUM(F2:F'+lastDR+')\t\t');
+  else lines.push('TOTAL\t\t\t\t=SUM(E2:E'+lastDR+')\t\t');
+
+  if(r.disposal){
+    lines.push('');
+    lines.push('DISPOSAL ANALYSIS — paste into a third sheet named "Disposal Analysis" starting at A1:');
+    lines.push('');
+    lines.push('A1\tASSET DISPOSAL ANALYSIS');
+    lines.push('A3\tSale Date\tB3\t'+r.disposal.date);
+    lines.push('A4\tSale Proceeds (₹)\tB4\t'+r.disposal.sp);
+    lines.push('A5\tNet Book Value at Disposal (₹)\tB5\t=\'Depreciation Schedule\'!'+cC+lastDR);
+    lines.push('A6\tGain / (Loss) on Disposal (₹)\tB6\t=B4-B5');
+    lines.push('A9\tDr. Cash / Bank\tB9\t=B4');
+    lines.push('A10\tDr. Acc. Depreciation\tB10\t=\'Depreciation Schedule\'!'+aC+lastDR);
+    lines.push('A11\t    Cr. '+(f.assetName||'Asset')+' at Cost\tB11\t'+r.cost);
+    lines.push('A12\t    Cr. Gain on Disposal (if +ve)\tB12\t=IF(B6>0,B6,"")');
+    lines.push('A13\tDr. Loss on Disposal (if -ve)\tB13\t=IF(B6<0,-B6,"")');
+  }
+  var fmlText=lines.join('\n');
+  window._fml=fmlText;
+
+  var h='<div style="display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap">';
+  h+='<button class="cb" style="width:auto;padding:12px 28px" onclick="doXL()">↓ Download .xlsx file</button>';
+  h+='<span style="font-size:13px;color:var(--color-text-secondary)">Three sheets: Inputs · Depreciation Schedule · Disposal Analysis (if applicable) — all with live Excel formulas</span></div>';
+
+  h+='<div class="slbl">Copy-paste formulas into Excel or Google Sheets</div>';
+  h+='<div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px">';
+  h+='Create two sheets named <code class="pill">Inputs</code> and <code class="pill">Depreciation Schedule</code>. ';
+  h+='Copy the text below and paste the relevant blocks into each sheet. Cells starting with <code class="pill">=</code> will be treated as live formulas automatically.';
+  h+='</div>';
+  h+='<div class="fb">'+escH(fmlText)+'</div>';
+  h+='<div style="display:flex;gap:12px;align-items:center;margin-top:12px">';
+  h+='<button class="xb" onclick="cpFml()">Copy all formulas to clipboard</button>';
+  h+='<span id="ck" style="display:none;font-size:13px;color:#3B6D11">✓ Copied to clipboard</span></div>';
+  document.getElementById('xl-body').innerHTML=h;
+}
+
+function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function cpFml(){
+  navigator.clipboard.writeText(window._fml||'').then(function(){
+    var ok=document.getElementById('ck');ok.style.display='inline';
+    setTimeout(function(){ok.style.display='none';},2800);
+  });
+}
+
+function doXL(){
+  if(!lastR){alert('Generate a schedule first.');return;}
+  var f=lastR.f,r=lastR.r,rows=r.rows,disposal=r.disposal;
+  var isUOP=f.method==='UOP',isWDV=f.method==='WDV';
+  var wb=XLSX.utils.book_new();
+  var oC=isUOP?'E':'D',dC=isUOP?'F':'E',aC=isUOP?'G':'F',cC=isUOP?'H':'G',proC=isUOP?'D':'C';
+  var lastDR=rows.length+1;
+
+  // — Inputs sheet —
+  var inp=[
+    ['DEPRECIATION SCHEDULE — '+(f.company||'Company')],
+    [],
+    ['ASSET INFORMATION'],
+    ['Company Name',f.company],
+    ['Asset Name',f.assetName],
+    ['Purchase Date',f.purchaseDate],
+    [],
+    ['ASSUMPTIONS'],
+    ['Cost of Asset (₹)',r.cost],
+    ['Residual / Salvage Value (₹)',r.res],
+    ['Useful Life (Years)',r.life],
+    ['Depreciation Method',{SLM:'Straight-Line (SLM)',WDV:'Written Down Value (WDV)',UOP:'Units of Production (UOP)'}[f.method]],
+  ];
+  if(isWDV) inp.push(['WDV Rate (p.a.)',r.wdvRate]);
+  if(isUOP) inp.push(['Total Production Units',r.totalU]);
+  if(f.saleDate){inp.push(['Sale Date',f.saleDate]);inp.push(['Sale Proceeds (₹)',+f.saleProceeds||0]);}
+  var inpWS=XLSX.utils.aoa_to_sheet(inp);
+  inpWS['!cols']=[{wch:32},{wch:24}];
+  cfm(inpWS);XLSX.utils.book_append_sheet(wb,inpWS,'Inputs');
+
+  // — Schedule sheet —
+  var hdrs=isUOP
+    ?['Yr','Period','Units','Proration','Opening BV (₹)','Depreciation (₹)','Acc. Dep (₹)','Closing BV (₹)']
+    :['Yr','Period','Proration','Opening BV (₹)','Depreciation (₹)','Acc. Dep (₹)','Closing BV (₹)'];
+  var sd=[hdrs];
+  rows.forEach(function(row,i){
+    var er=i+2;
+    var openF=i===0?'=Inputs!$B$9':'='+cC+(er-1);
+    var depF;
+    if(f.method==='SLM') depF='=(Inputs!$B$9-Inputs!$B$10)/Inputs!$B$11*'+proC+er;
+    else if(isWDV) depF='='+oC+er+'*Inputs!$B$13*'+proC+er;
+    else depF='=(C'+er+'/Inputs!$B$13)*(Inputs!$B$9-Inputs!$B$10)';
+    var accF=i===0?'='+dC+er:'='+aC+(er-1)+'+'+dC+er;
+    var closeF='='+oC+er+'-'+dC+er;
+    if(isUOP) sd.push([row.sn,row.period,row.units,row.pro,openF,depF,accF,closeF]);
+    else sd.push([row.sn,row.period,row.pro,openF,depF,accF,closeF]);
+  });
+  if(isUOP) sd.push(['TOTAL','','=SUM(C2:C'+lastDR+')','','','=SUM(F2:F'+lastDR+')','','']);
+  else sd.push(['TOTAL','','','','=SUM(E2:E'+lastDR+')','','']);
+  var scWS=XLSX.utils.aoa_to_sheet(sd);
+  scWS['!cols']=(isUOP?[5,28,14,12,20,20,18,20]:[5,28,12,20,20,18,20]).map(function(w){return{wch:w};});
+  cfm(scWS);XLSX.utils.book_append_sheet(wb,scWS,'Depreciation Schedule');
+
+  // — Disposal sheet —
+  if(disposal){
+    var dispD=[
+      ['ASSET DISPOSAL ANALYSIS'],
+      [],
+      ['Sale Date',disposal.date],
+      ['Sale Proceeds (₹)',disposal.sp],
+      ['Net Book Value at Disposal (₹)',"='Depreciation Schedule'!"+cC+lastDR],
+      ['Gain / (Loss) on Disposal (₹)','=B4-B5'],
+      [],
+      ['JOURNAL ENTRY AT DISPOSAL'],
+      ['Dr. Cash / Bank','=B4'],
+      ['Dr. Accumulated Depreciation',"='Depreciation Schedule'!"+aC+lastDR],
+      ['    Cr. '+(f.assetName||'Asset')+' at Cost',r.cost],
+      ['    Cr. Gain on Disposal (if applicable)','=IF(B6>0,B6,"")'],
+      ['Dr. Loss on Disposal (if applicable)','=IF(B6<0,-B6,"")'],
+    ];
+    var dWS=XLSX.utils.aoa_to_sheet(dispD);
+    dWS['!cols']=[{wch:40},{wch:24}];
+    cfm(dWS);XLSX.utils.book_append_sheet(wb,dWS,'Disposal Analysis');
+  }
+
+  var nm=(f.assetName||'Asset').replace(/\s+/g,'_');
+  XLSX.writeFile(wb,nm+'_Depreciation.xlsx');
+}
+
+function cfm(ws){
+  Object.keys(ws).forEach(function(addr){
+    if(addr[0]==='!')return;
+    var c=ws[addr];
+    if(c.t==='s'&&typeof c.v==='string'&&c.v.charAt(0)==='='){
+      ws[addr]={f:c.v.slice(1)};
+    }
+  });
+}
+
+swTab('form');
+</script>
